@@ -1,32 +1,39 @@
 import React from "react";
 
-function MenuBar(props) {
-  /*
+function MenuBar({ renderComponent }) {
 
-  The 'span' tags below are the menu items. Think about the way a menu 
-  should work. When you click a menu item, the button typically becomes
-  'active' to indicate that it is currently selected. How could we achieve
-  this programatically? What other behavior do we expect when we click
-  on a menu item? Do we need state in this component, and if not, how can
-  this component be made aware of what is currently the active menu item?
-
-  */
+  function clickSpan(compState){
+    // use callback function to handle switching components on click
+    // taking in the string of the key needed to change comps and sending to parent
+    renderComponent(compState)
+    // grab all spans and clear their active status, start fresh
+    const spanTags = document.querySelectorAll('span')
+    // convert nodeList to array to map through (best practice)
+    const spanTagsArr = [...spanTags].map(spanTag => {
+      spanTag.className = 'item'
+    })
+    // grab span by id passing in the string from the onClick
+    const activeSpan = document.getElementById(compState)
+    // change className to active
+    activeSpan.className = 'item active'
+  }
 
   return (
-    <div className="ui four item menu">
-      <span className="item active">
-        <i className="user large icon" />
+    <div className="ui four item menu" >
+      {/* jerry rigged the onClick to always take in a specific string, otherwise if the i element is clicked, rather than span, messes everything up */}
+      <span id="profile" className="item active" onClick={() => clickSpan('profile')}>
+        <i className="user large icon"  />
       </span>
 
-      <span className="item">
+      <span id="photos" className="item" onClick={() => clickSpan('photos')}>
         <i className="photo large icon" />
       </span>
 
-      <span className="item">
+      <span id="cocktails" className="item" onClick={() => clickSpan('cocktails')}>
         <i className="cocktail large icon" />
       </span>
 
-      <span className="item">
+      <span id="pokemon" className="item" onClick={() => clickSpan('pokemon')}>
         <i className=" themeisle large icon" />
       </span>
     </div>
